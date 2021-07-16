@@ -13,6 +13,11 @@ public class PageController {
 
     @GetMapping("/userForm")
     public String userForm(Model model){
-        return "user-form";
+        return "user-form/user-view";
+    }
+
+    @GetMapping("/login")
+    public String login(Model model){
+        return "";
     }
 }
