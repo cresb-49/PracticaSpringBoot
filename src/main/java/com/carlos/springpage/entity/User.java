@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,19 +30,35 @@ public class User implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native",strategy = "native")
     private long id;
+
+
+    //Variables primitivas como int, bool etc se utiliza @NotNull
+
     @Column
+    @NotBlank
+    @Size(min = 5,max = 10,message = "El nombre no debe sobrepasar 10 caracteres")
     private String firstName;
+    
     @Column
+    @NotBlank
     private String lastName;
+
     @Column(unique = true)
+    @NotBlank
+    @Email
     private String email;
+
     @Column(unique = true)
+    @NotBlank
     private String username;
+
     @Column
+    @NotBlank
     private String password;
     
     //Con esta etiqueta evitamos que se aincluida en la tabla de las base de datos como datos persistentes
     @Transient
+    @NotBlank
     private String confirmPassword;
 
     @ManyToMany(fetch = FetchType.LAZY)
