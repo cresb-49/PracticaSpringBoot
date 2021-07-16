@@ -26,23 +26,36 @@ public class PageController {
     private RoleRepository roleRepository;
 
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model) {
         return "index";
     }
 
     @GetMapping("/userForm")
-    public String userForm(Model model){
+    public String userForm(Model model) {
         model.addAttribute("userList", userService.getAllUsers());
         model.addAttribute("roles", roleRepository.findAll());
         model.addAttribute("userForm", new User());
-        model.addAttribute("listTab","active");
+        model.addAttribute("listTab", "active");
         return "user-form/user-view";
     }
+
     @PostMapping("/userForm")
-    public String createdUser(@Valid @ModelAttribute("userForm")User user,BindingResult result, ModelMap model){
-        if(result.hasErrors()){
-            model.addAttribute("userForm",user);
-            model.addAttribute("formTab","active");
+    public String createdUser(@Valid @ModelAttribute("userForm") User user, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("userForm", user);
+            model.addAttribute("formTab", "active");
+        } else {
+            try {
+                userService.createUser(user);
+                model.addAttribute("userForm", new User());
+                model.addAttribute("listTab", "active");
+            } catch (Exception e) {
+                model.addAttribute("formErrorMessage", e.getMessage());
+                model.addAttribute("userForm", user);
+                model.addAttribute("formTab", "active");
+                model.addAttribute("userList", userService.getAllUsers());
+                model.addAttribute("roles", roleRepository.findAll());
+            }
         }
         model.addAttribute("userList", userService.getAllUsers());
         model.addAttribute("roles", roleRepository.findAll());
@@ -51,7 +64,7 @@ public class PageController {
     }
 
     @GetMapping("/login")
-    public String login(Model model){
+    public String login(Model model) {
         return "";
     }
 }

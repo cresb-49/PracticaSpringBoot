@@ -1,5 +1,6 @@
 package com.carlos.springpage.repository;
 
+import java.util.Optional;
 import java.util.Set;
 
 import com.carlos.springpage.entity.User;
@@ -15,5 +16,5 @@ public interface UserRepository extends CrudRepository<User,Long>{
      * Como los metodos de esta interfaz es "findBy" + variable del objeto usando UperCamelCase
     */
     public Set<User> findByEmail(String email);
-    public Set<User> findByUsername(String username);
+    public Optional<User> findByUsername(String username);
 }
