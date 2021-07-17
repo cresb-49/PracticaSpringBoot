@@ -58,7 +58,6 @@ public class User implements Serializable{
     
     //Con esta etiqueta evitamos que se aincluida en la tabla de las base de datos como datos persistentes
     @Transient
-    @NotBlank
     private String confirmPassword;
 
     @ManyToMany(fetch = FetchType.LAZY)

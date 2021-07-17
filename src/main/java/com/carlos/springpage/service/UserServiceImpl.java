@@ -28,8 +28,11 @@ public class UserServiceImpl implements UserService{
     }
 
     private boolean checkPasswordMatch(User user) throws Exception{
+        if(user.getConfirmPassword() == null || user.getConfirmPassword().isEmpty()){
+            throw new Exception("El campo de confirmacion no debe estar vacio");
+        }
         if(!(user.getPassword().equals(user.getConfirmPassword()))){
-            throw new Exception("Las passwords con coinciden");
+            throw new Exception("Password y confirmpassword no son iguales");
         }
         return true;
     }
@@ -39,5 +42,29 @@ public class UserServiceImpl implements UserService{
             user = userRepository.save(user);
         }
         return user;
+    }
+
+    @Override
+    public User getUserById(Long id) throws Exception {
+        return userRepository.findById(id).orElseThrow(()->new Exception("El usuario seleccionado no existe"));
+    }
+    @Override
+    public User updateUser(User fromUser) throws Exception {
+        User toUser = getUserById(fromUser.getId());
+        mapUser(fromUser, toUser);
+        userRepository.save(toUser);
+        return null;
+    }
+    /**
+     * Hacemos un merge del usuario sin tomar en cuenta la password
+     * @param from
+     * @param to
+     */
+    protected void mapUser(User from, User to){
+        to.setUsername(from.getUsername());
+        to.setFirstName(from.getFirstName());
+        to.setLastName(from.getLastName());
+        to.setEmail(from.getEmail());
+        to.setRoles(from.getRoles());
     }
 }
