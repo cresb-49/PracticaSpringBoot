@@ -74,7 +74,8 @@
             </div>
         </div>
     </div>
-
+    <!--Agregado de la ventana de cambio de contrasena-->
+    <div th:if="${editMode}" th:include="user-form/change-password.html" th:remove="tag"></div>
     <!--Agregado de la ventana de confirmacion para eliminar un usuario-->
     <div th:include="user-form/confirm-delete-dialog.html" th:remove="tag"></div>
 

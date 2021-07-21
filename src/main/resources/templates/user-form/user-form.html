@@ -1,12 +1,8 @@
 <form id="userForm" th:object="${userForm}" method="post" class="form" role="form" th:action="${editMode}?@{/editUser}:@{/userForm}">
 	
 	<input class="form-control" type="hidden" th:field="${userForm.id}">
-
 	<!--Necesario para pasar la validadicon del formulario en el model revisar objeto de java en notaciones de parametros-->
 	<input class="form-control" type="hidden" id="password" name="password" value="xxxx" th:if="${editMode}">
-	<!--Necesario para pasar la validadicon del formulario en el model revisar objeto de java en notaciones de parametros-->
-	<input class="form-control" type="hidden" id="confirmPassword" name="confirmPassword" value="xxxx" th:if="${editMode}">
-
 
 	<div class="form-group row">
 		<label class="col-lg-3 col-form-label form-control-label">First name</label>
@@ -64,9 +60,10 @@
 	<div class="form-group row">
 		<div class="col-lg-12 text-center">
 			<a class="btn btn-secondary" th:href="@{'/editUser/cancel'}">Cancel</a>
-			<input type="reset" class="btn btn-secondary" value="Reset">
+			<button type="button" class="btn btn-secondary" data-toggle="modal" th:if="${editMode}" data-target="#changePasswordModal">Change Password</button>
 			<input type="submit" class="btn btn-primary" th:value="${editMode}?'Save User':'Create User'">
 		</div>
 	</div>
 	<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error Message</div>
+	<div class="alert alert-success text-center d-none" th:if="${editMode}" id= "formSuccess">Success Menssage</div>
 </form>

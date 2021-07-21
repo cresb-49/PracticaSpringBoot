@@ -2,6 +2,7 @@ package com.carlos.springpage.service;
 
 import java.util.Optional;
 
+import com.carlos.springpage.dto.ChangePasswordForm;
 import com.carlos.springpage.entity.User;
 import com.carlos.springpage.repository.UserRepository;
 
@@ -72,4 +73,28 @@ public class UserServiceImpl implements UserService{
         User user = getUserById(id);
         userRepository.deleteById(id);
     }
+
+    @Override
+    public User changePassword(ChangePasswordForm form) throws Exception{
+		User storedUser = userRepository
+				.findById( form.getId() )
+				.orElseThrow(() -> new Exception("UsernotFound in ChangePassword -"+this.getClass().getName()));
+		
+		if( !(form.getCurrentPassword().equals(storedUser.getPassword()))) {
+			throw new Exception("Current Password Incorrect.");
+		}
+		
+		if ( form.getCurrentPassword().equals(form.getNewPassword())) {
+			throw new Exception("New Password must be different than Current Password!");
+		}
+		
+        System.out.println("Nueva:"+form.getNewPassword());
+        System.out.println("Confirmacion:"+form.getConfirmPassword());
+		if( !(form.getNewPassword().equals(form.getConfirmPassword()))) {
+			throw new Exception("New Password and Confirm Password does not match!");
+		}
+		
+		storedUser.setPassword(form.getNewPassword());
+		return userRepository.save(storedUser);
+	}
 }
