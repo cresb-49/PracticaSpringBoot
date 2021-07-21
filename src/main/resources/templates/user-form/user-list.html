@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             <tr th:each="user:${userList}">
-                
+
                 <td th:text="${user.id}"></td>
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.lastName}"></td>
@@ -26,4 +26,22 @@
             </tr>
         </tbody>
     </table>
+
+    <div id="deleteError" th:if="${deleteError}" class="alert alert-danger text-center" role="alert">
+        <span th:text="${deleteError}"></span>
+    </div>
+
 </div>
+
+<!--SCRIPT QUE CONTROLA LA ELIMINACION DEL USUARIO-->
+<script type="text/javascript">
+    function confirmDelete(id) {
+        $('#deleteModal').modal('show');
+        $("#userIdHiddenInput").val(id);
+    }
+
+    function deleteUser() {
+        var id = $("#userIdHiddenInput").val();
+        window.location = "deleteUser/" + id;
+    }
+</script>
